@@ -8,6 +8,7 @@ import rateLimit from 'express-rate-limit';
 
 import disputeRoutes from './api/routes/disputeRoutes.js';
 import escrowRoutes from './api/routes/escrowRoutes.js';
+import kycRoutes from './api/routes/kycRoutes.js';
 import notificationRoutes from './api/routes/notificationRoutes.js';
 import reputationRoutes from './api/routes/reputationRoutes.js';
 import userRoutes from './api/routes/userRoutes.js';
@@ -55,6 +56,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/reputation', reputationRoutes);
 app.use('/api/disputes', disputeRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/kyc', kycRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });

@@ -118,6 +118,22 @@ model IndexerState {
   @@map("indexer_state")
 }
 
+// ── KYC ──────────────────────────────────────────────────────────────────────
+
+model KycVerification {
+  id              Int       @id @default(autoincrement())
+  address         String    @unique
+  applicantId     String?   @unique @map("applicant_id")  // Sumsub applicant ID
+  status          KycStatus @default(Pending)
+  reviewResult    String?   @map("review_result")         // approved | declined
+  rejectLabels    String[]  @map("reject_labels")         // Sumsub rejection reasons
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+
+  @@index([status])
+  @@map("kyc_verifications")
+}
+
 // ── Enums ─────────────────────────────────────────────────────────────────────
 
 enum EscrowStatus {
@@ -132,4 +148,12 @@ enum MilestoneStatus {
   Submitted
   Approved
   Rejected
+}
+
+enum KycStatus {
+  Pending
+  Init
+  Processing
+  Approved
+  Declined
 }

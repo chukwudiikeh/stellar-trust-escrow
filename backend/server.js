@@ -10,6 +10,7 @@ import disputeRoutes from './api/routes/disputeRoutes.js';
 import escrowRoutes from './api/routes/escrowRoutes.js';
 import kycRoutes from './api/routes/kycRoutes.js';
 import notificationRoutes from './api/routes/notificationRoutes.js';
+import paymentRoutes from './api/routes/paymentRoutes.js';
 import reputationRoutes from './api/routes/reputationRoutes.js';
 import userRoutes from './api/routes/userRoutes.js';
 import cache from './lib/cache.js';
@@ -57,6 +58,7 @@ app.use('/api/reputation', reputationRoutes);
 app.use('/api/disputes', disputeRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/kyc', kycRoutes);
+app.use('/api/payments', paymentRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });

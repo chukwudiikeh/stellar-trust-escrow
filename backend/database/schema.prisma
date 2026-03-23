@@ -118,6 +118,27 @@ model IndexerState {
   @@map("indexer_state")
 }
 
+// ── Payments ─────────────────────────────────────────────────────────────────
+
+model Payment {
+  id                String        @id @default(cuid())
+  address           String                              // Stellar address of payer
+  escrowId          BigInt?       @map("escrow_id")     // linked escrow (nullable until funded)
+  stripeSessionId   String?       @unique @map("stripe_session_id")
+  stripePaymentIntent String?     @unique @map("stripe_payment_intent")
+  amountFiat        Int           @map("amount_fiat")   // in cents (USD)
+  amountCrypto      String?       @map("amount_crypto") // XLM/USDC amount after conversion
+  currency          String        @default("usd")
+  status            PaymentStatus @default(Pending)
+  refundId          String?       @map("refund_id")     // Stripe refund ID
+  createdAt         DateTime      @default(now()) @map("created_at")
+  updatedAt         DateTime      @updatedAt @map("updated_at")
+
+  @@index([address])
+  @@index([status])
+  @@map("payments")
+}
+
 // ── KYC ──────────────────────────────────────────────────────────────────────
 
 model KycVerification {
@@ -156,4 +177,12 @@ enum KycStatus {
   Processing
   Approved
   Declined
+}
+
+enum PaymentStatus {
+  Pending
+  Processing
+  Completed
+  Failed
+  Refunded
 }

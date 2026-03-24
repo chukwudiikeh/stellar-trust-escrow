@@ -45,4 +45,22 @@ router.get('/export', async (req, res) => {
   }
 });
 
+/**
+ * @route  DELETE /api/audit/purge
+ * @desc   Delete audit records older than `retentionDays` days.
+ * @body   { retentionDays: number }
+ */
+router.delete('/purge', async (req, res) => {
+  const retentionDays = parseInt(req.body?.retentionDays);
+  if (!retentionDays || retentionDays < 1) {
+    return res.status(400).json({ error: 'retentionDays must be a positive integer.' });
+  }
+  try {
+    const deleted = await auditService.purgeOldRecords(retentionDays);
+    res.json({ deleted });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 export default router;
